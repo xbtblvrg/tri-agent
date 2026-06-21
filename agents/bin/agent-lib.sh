@@ -8,8 +8,12 @@ AGENT_BIN="$AGENT_WORK/agents/bin"
 AGENT_TASKS="$AGENT_WORK/agents/tasks"
 AGENT_LOG="$AGENT_WORK/memory/agent-task-log.md"
 AGENT_TODAY="$AGENT_WORK/memory/$(date +%Y-%m-%d).md"
-AGENT_RUN="$AGENT_BIN/agent-run.sh --fast"
+AGENT_RUN_SCRIPT="$AGENT_BIN/agent-run.sh"
 AGENT_REFRESH="$AGENT_BIN/agent-context-refresh.sh"
+
+agent_run_cli() {
+  "$AGENT_RUN_SCRIPT" --fast "$@"
+}
 
 agent_next_id() {
   local last n
@@ -71,7 +75,7 @@ agent_run_codex() {
   local id="$1" desc="$2" extra="${3:-}"
   "$AGENT_REFRESH" >/dev/null
   echo "[$id] Codex dolgozik..."
-  "$AGENT_RUN" codex "Task $id: $desc
+  agent_run_cli codex "Task $id: $desc
 $extra
 Szabályok: minimális diff, futtasd a teszteket ha releváns, írd agents/tasks/${id}.result.json-ba (status, modified_files, message). Ne írj MEMORY.md-be."
 }
@@ -87,7 +91,7 @@ agent_run_claude_review() {
   staged=$(git -C "$AGENT_WORK" diff --cached 2>/dev/null | head -c 20000)
 
   echo "[$id] Claude review..."
-  "$AGENT_RUN" claude "Code review. $task_note
+  agent_run_cli claude "Code review. $task_note
 Verdict: APPROVED | CHANGES_REQUESTED | BLOCKED. Írd agents/tasks/${id}-review.json-ba (verdict, findings[], ts).
 ---
 STAGED: $staged

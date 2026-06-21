@@ -13,7 +13,7 @@
 | Indítás | Tri-agent tudja? | Feladatnál mit csinál? |
 |---------|------------------|------------------------|
 | **Grok** (chat) | ✓ AGENTS.md + rules | `agent-do.sh` |
-| **Claude** `claude` | ✓ CLAUDE.md | `agent-do.sh` (nem implementál) |
+| **Claude** `claude` | ✓ `.claude/CLAUDE.md` | `agent-do.sh` (nem implementál) |
 | **Codex** `codex` | ✓ ~/.codex/AGENTS.md + AGENTS.md | implement VAGY `agent-do.sh` feature-nél |
 | **`do "…"`** | ✓ | teljes pipeline |
 | **`agent-run.sh X`** | ✓ bootstrap prompt | egy agent, egy lépés |

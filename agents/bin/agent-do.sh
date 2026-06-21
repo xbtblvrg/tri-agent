@@ -21,7 +21,7 @@ echo ""
 case "$kind" in
   question)
     agent_write_task "$id" "$desc" "active" "auto"
-    "$AGENT_RUN" grok "$desc — válaszolj röviden, magyarul."
+    agent_run_cli grok "$desc — válaszolj röviden, magyarul."
     agent_append_log "$id" "$desc" "grok" "válasz"
     ;;
   review)

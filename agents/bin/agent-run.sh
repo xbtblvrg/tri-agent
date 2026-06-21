@@ -17,16 +17,19 @@ refresh="$work/agents/bin/agent-context-refresh.sh"
 "$refresh" >/dev/null
 
 if [[ "$mode" == fast ]]; then
-  bootstrap="Dev context: $work/agents/dev/CONTEXT.md | Szerep: $work/agents/roles/${agent}.md | Feladat: $prompt"
+  bootstrap="Tri-agent: olvasd $work/agents/roles/${agent}.md (ez a TE szereped, kötelező). Dev context: $work/agents/dev/CONTEXT.md. Feladat: $prompt"
 else
-  bootstrap="Olvasd: $work/agents/AGENTS_PROTOCOL.md, $work/agents/roles/${agent}.md, $work/MEMORY.md, $work/memory/$(date +%Y-%m-%d).md. Feladat: $prompt"
+  bootstrap="Tri-agent: olvasd $work/agents/AGENTS_PROTOCOL.md és $work/agents/roles/${agent}.md (ez a TE szereped). MEMORY: $work/MEMORY.md, $work/memory/$(date +%Y-%m-%d).md. Feladat: $prompt"
 fi
 
 cd "$work"
 
 case "$agent" in
   grok)
-    grok -p "$bootstrap" --always-approve --output-format text 2>&1
+    grok -p "$bootstrap" \
+      --agent "$work/agents/roles/grok.md" \
+      --always-approve \
+      --output-format plain 2>&1
     ;;
   claude)
     claude -p "$bootstrap" \
