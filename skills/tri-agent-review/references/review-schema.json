@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tri-agent Claude review",
+  "type": "object",
+  "required": ["id", "verdict", "findings", "ts"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^T-[0-9]{4}$" },
+    "verdict": { "enum": ["APPROVED", "CHANGES_REQUESTED", "BLOCKED"] },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "message"],
+        "properties": {
+          "severity": { "enum": ["high", "medium", "low"] },
+          "file": { "type": "string" },
+          "line": { "type": "integer" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "ts": { "type": "string", "format": "date-time" }
+  }
+}

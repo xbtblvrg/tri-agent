@@ -18,6 +18,8 @@ A user **csak a feladatot mondja**. Te futtatod:
 ~/bin/agent-do.sh "user feladat szövege"
 ```
 
+**Skill:** `skills/tri-agent-do/SKILL.md` (vagy `/tri-agent-do`) — classify → pipeline → összefoglaló.
+
 **Ne kérdezz:** melyik agent, pipeline, implement? — `agent-do` eldönti és lefuttatja.
 
 Utána olvasd `agents/tasks/T-NNNN.summary.md` és foglald össze magyarul.

@@ -19,9 +19,10 @@ agent-do.sh "bármi feladat"
 
 ```
 agent-do.sh
-  ├─ classify (kérdés → Grok | review → Claude | feladat → pipeline)
-  ├─ Codex implement (fast mode)
-  ├─ Claude review (git diff)
+  ├─ classify (kérdés → Grok | design → Grok | review → Claude | feladat → pipeline)
+  ├─ Codex implement (tri-agent-implement skill)
+  ├─ verify (tri-agent-verify script)
+  ├─ Claude review (tri-agent-review skill + git diff)
   ├─ ha CHANGES_REQUESTED → Codex fix (1 kör)
   └─ summary.md → Grok összefoglalja a usernek
 ```

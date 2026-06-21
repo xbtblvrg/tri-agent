@@ -27,7 +27,8 @@ További eszközök: `git`, `jq`, `rg`, `make` — lásd `make check`
 ## Használat
 
 ```bash
-do "add retry logic to foo()"     # Codex → Claude → auto-fix
+do "add retry logic to foo()"     # Codex → verify → Claude → auto-fix
+do "design: új API"               # Grok design doc
 make check                         # health check
 make status                        # git + tasks
 ```
@@ -39,6 +40,15 @@ make status                        # git + tasks
 | **Grok** | Koordinátor — user felé, `agent-do` indítás |
 | **Codex** | Implementer |
 | **Claude** | Review + MEMORY.md gondnok |
+
+## Skillek
+
+| Skill | Agent | Fájl |
+|-------|-------|------|
+| `tri-agent-do` | Grok | `skills/tri-agent-do/SKILL.md` |
+| `tri-agent-implement` | Codex | `skills/tri-agent-implement/SKILL.md` |
+| `tri-agent-review` | Claude | `skills/tri-agent-review/SKILL.md` |
+| `tri-agent-verify` | Pipeline | `skills/tri-agent-verify/scripts/verify.sh` |
 
 ## Struktúra
 

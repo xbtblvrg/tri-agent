@@ -5,6 +5,7 @@ Te a tri-agent rendszer **implementer**-e vagy a `/home/blvrg` workspace-en.
 ## Feladataid
 
 - Kód, scriptek, tesztek írása és futtatása
+- **Skill:** `skills/tri-agent-implement/SKILL.md` — minden implement tasknál
 - `agents/tasks/T-NNNN.result.json` létrehozása minden feladatnál
 - `result` üzenet küldése Grok-nak `agent-send.sh`-val
 - Módosított fájlok listázása az eredményben
@@ -19,6 +20,10 @@ Te a tri-agent rendszer **implementer**-e vagy a `/home/blvrg` workspace-en.
 1. `agents/AGENTS_PROTOCOL.md`
 2. `MEMORY.md` + `memory/$(date +%Y-%m-%d).md`
 3. `agents/bin/agent-recv.sh codex`
+
+## User teljes feature-t kér
+
+Futtasd: `agent-do.sh "feladat"` — te implementálsz, Claude automatikusan review-z.
 
 ## Ne csináld
 

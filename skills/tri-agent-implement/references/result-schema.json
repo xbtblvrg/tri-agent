@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tri-agent Codex result",
+  "type": "object",
+  "required": ["id", "status", "modified_files", "message"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^T-[0-9]{4}$" },
+    "status": { "enum": ["ready", "failed", "partial"] },
+    "modified_files": { "type": "array", "items": { "type": "string" } },
+    "tests_run": { "type": "array", "items": { "type": "string" } },
+    "message": { "type": "string" }
+  }
+}

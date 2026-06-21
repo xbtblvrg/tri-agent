@@ -10,6 +10,9 @@ AGENT_LOG="$AGENT_WORK/memory/agent-task-log.md"
 AGENT_TODAY="$AGENT_WORK/memory/$(date +%Y-%m-%d).md"
 AGENT_RUN_SCRIPT="$AGENT_BIN/agent-run.sh"
 AGENT_REFRESH="$AGENT_BIN/agent-context-refresh.sh"
+AGENT_SKILL_IMPL="$AGENT_WORK/skills/tri-agent-implement/SKILL.md"
+AGENT_SKILL_REVIEW="$AGENT_WORK/skills/tri-agent-review/SKILL.md"
+AGENT_SKILL_VERIFY="$AGENT_WORK/skills/tri-agent-verify/scripts/verify.sh"
 
 agent_run_cli() {
   "$AGENT_RUN_SCRIPT" --fast "$@"
@@ -50,13 +53,15 @@ agent_classify() {
 
   if echo "$lower" | grep -qE '^(mi |mi a |mi az |hogyan |miért |magyarázd|explain|what |why |működik)'; then
     echo question
+  elif echo "$lower" | grep -qE '^design:|/design|design doc|architekt|system design|tervezd meg|tervezés|adatmodell|api design'; then
+    echo design
   elif echo "$lower" | grep -qE 'review|refactor|audit|ellenőriz|vizsgáld|átnézed|code review|nézd át'; then
     if echo "$lower" | grep -qE 'implement|írj|készít|add|fix|javít|fejleszt|build'; then
       echo pipeline
     else
       echo review
     fi
-  elif echo "$lower" | grep -qE 'implement|build|fix|add|create|write|script|test|készít|írj|javít|fejleszt|telepít|állíts|konfigurál'; then
+  elif echo "$lower" | grep -qE 'implement|build|fix|add|create|write|script|test|készít|írj|javít|fejleszt|telepít|állíts|konfigurál|csináld'; then
     echo pipeline
   else
     echo pipeline
@@ -74,10 +79,27 @@ agent_review_verdict() {
 agent_run_codex() {
   local id="$1" desc="$2" extra="${3:-}"
   "$AGENT_REFRESH" >/dev/null
-  echo "[$id] Codex dolgozik..."
+  echo "[$id] Codex dolgozik (tri-agent-implement skill)..."
   agent_run_cli codex "Task $id: $desc
 $extra
-Szabályok: minimális diff, futtasd a teszteket ha releváns, írd agents/tasks/${id}.result.json-ba (status, modified_files, message). Ne írj MEMORY.md-be."
+Kötelező skill: $AGENT_SKILL_IMPL — olvasd és kövesd (result.json séma, minimális diff, tesztek). Ne írj MEMORY.md-be."
+}
+
+agent_run_verify() {
+  local id="$1"
+  echo "[$id] Verify (tri-agent-verify)..."
+  if [[ -x "$AGENT_SKILL_VERIFY" ]]; then
+    "$AGENT_SKILL_VERIFY" "$id" 2>&1 || true
+  else
+    echo "[$id] Verify: skip (script missing)"
+  fi
+}
+
+agent_verify_summary() {
+  local id="$1"
+  local f="$AGENT_TASKS/${id}-verify.json"
+  [[ -f "$f" ]] || return 0
+  jq -c . "$f" 2>/dev/null | head -c 8000
 }
 
 agent_run_claude_review() {
@@ -90,9 +112,14 @@ agent_run_claude_review() {
   diff=$(git -C "$AGENT_WORK" diff 2>/dev/null | head -c 50000)
   staged=$(git -C "$AGENT_WORK" diff --cached 2>/dev/null | head -c 20000)
 
-  echo "[$id] Claude review..."
+  local verify_note
+  verify_note=$(agent_verify_summary "$id")
+
+  echo "[$id] Claude review (tri-agent-review skill)..."
   agent_run_cli claude "Code review. $task_note
-Verdict: APPROVED | CHANGES_REQUESTED | BLOCKED. Írd agents/tasks/${id}-review.json-ba (verdict, findings[], ts).
+Kötelező skill: $AGENT_SKILL_REVIEW — olvasd és kövesd (review.json séma, verdict szabályok).
+VERIFY: ${verify_note:-nincs}
+Írd agents/tasks/${id}-review.json-ba (verdict, findings[], ts).
 ---
 STAGED: $staged
 ---
@@ -106,6 +133,7 @@ agent_write_summary() {
 
   codex_msg=$(jq -r '.message // "—"' "$AGENT_TASKS/${id}.result.json" 2>/dev/null || echo "—")
   review_msg=$(jq -r '.verdict // .status // "—"' "$AGENT_TASKS/${id}-review.json" 2>/dev/null || echo "—")
+  verify_msg=$(jq -r '.status // "—"' "$AGENT_TASKS/${id}-verify.json" 2>/dev/null || echo "—")
   files=$(jq -r '.modified_files // [] | join(", ")' "$AGENT_TASKS/${id}.result.json" 2>/dev/null || echo "—")
 
   {
@@ -113,6 +141,7 @@ agent_write_summary() {
     echo ""
     echo "**Feladat:** $desc"
     echo "**Codex:** $codex_msg"
+    echo "**Verify:** $verify_msg"
     echo "**Claude:** $review_msg"
     echo "**Fájlok:** $files"
     echo "**Végső:** ${verdict:-$review_msg}"

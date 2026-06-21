@@ -4,7 +4,8 @@
 
 | User mond | Bárki indítja | Mi történik |
 |-----------|---------------|-------------|
-| Feladat (implement/fix/feature) | Grok / Claude / Codex | → `agent-do.sh` → Codex → Claude → auto-fix |
+| Feladat (implement/fix/feature) | Grok / Claude / Codex | → `agent-do.sh` → Codex → verify → Claude → auto-fix |
+| Design / architektúra | Grok | → `agent-do.sh` design: → Grok `/design` |
 | Kérdés (mi/hogyan) | Grok | közvetlen válasz |
 | Csak review | bárki | → `agent-do` review mód VAGY Claude diff review |
 
