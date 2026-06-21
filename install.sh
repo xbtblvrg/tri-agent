@@ -15,14 +15,19 @@ rsync -a "$SRC/skills/" "$TARGET/skills/" 2>/dev/null || mkdir -p "$TARGET/skill
 rsync -a "$SRC/docs/" "$TARGET/docs/" 2>/dev/null || mkdir -p "$TARGET/docs"
 
 mkdir -p "$TARGET/bin"
-chmod +x "$SRC/bin/"*.sh "$TARGET/agents/bin/"*.sh 2>/dev/null || true
+chmod +x "$SRC/bin/"*.sh "$SRC/agents/bin/"*.sh 2>/dev/null || true
 
-# bin/ symlinks
-for s in agent-do agent-dev agent-run agent-send agent-recv agent-dispatch; do
-  ln -sf "$TARGET/agents/bin/${s}.sh" "$TARGET/bin/${s}.sh"
+# bin/ — másolat (portábilis, nem függ a clone útvonalától)
+for f in "$SRC/bin/"*.sh; do
+  [[ -f "$f" ]] || continue
+  cp -f "$f" "$TARGET/bin/$(basename "$f")"
+  chmod +x "$TARGET/bin/$(basename "$f")"
 done
-for s in dev-setup dev-check dev-env dev-audit setup-skills setup-agent-configs; do
-  [[ -f "$SRC/bin/${s}.sh" ]] && ln -sf "$SRC/bin/${s}.sh" "$TARGET/bin/${s}.sh"
+
+# Agent wrapper symlinks → workspace agents/bin
+for s in agent-do agent-dev agent-run agent-send agent-recv agent-dispatch agent-context-refresh; do
+  [[ -f "$TARGET/agents/bin/${s}.sh" ]] && \
+    ln -sf "$TARGET/agents/bin/${s}.sh" "$TARGET/bin/${s}.sh"
 done
 
 # Dirs

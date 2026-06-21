@@ -73,13 +73,7 @@ if ! command -v grok >/dev/null 2>&1; then
   log "  Utána: permission_mode = always-approve a ~/.grok/config.toml-ban"
 fi
 
-# --- 6. Agent config sablonok (csak ha hiányzik) ---
-bash "$CLONE_DIR/bin/setup-agent-configs.sh" "$TARGET"
-
-# --- 7. Skill symlink-ek ---
-bash "$CLONE_DIR/bin/setup-skills.sh" "$TARGET"
-
-# --- 8. Health check ---
+# --- 6. Health check (install.sh már futtatta setup-agent-configs + setup-skills) ---
 log "Health check..."
 if [[ -x "$TARGET/bin/dev-check.sh" ]]; then
   BLVRG_WORKSPACE="$TARGET" "$TARGET/bin/dev-check.sh" || true
