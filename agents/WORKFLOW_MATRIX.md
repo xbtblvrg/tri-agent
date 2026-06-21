@@ -6,6 +6,7 @@
 |-----------|---------------|-------------|
 | Feladat (implement/fix/feature) | Grok / Claude / Codex | → `agent-do.sh` → Codex → verify → Claude → auto-fix |
 | Design / architektúra | Grok | → `agent-do.sh` design: → Grok `/design` |
+| Memory kurálás | Claude | → `agent-do.sh` memory: → tri-agent-memory skill |
 | Kérdés (mi/hogyan) | Grok | közvetlen válasz |
 | Csak review | bárki | → `agent-do` review mód VAGY Claude diff review |
 

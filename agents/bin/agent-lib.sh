@@ -12,6 +12,8 @@ AGENT_RUN_SCRIPT="$AGENT_BIN/agent-run.sh"
 AGENT_REFRESH="$AGENT_BIN/agent-context-refresh.sh"
 AGENT_SKILL_IMPL="$AGENT_WORK/skills/tri-agent-implement/SKILL.md"
 AGENT_SKILL_REVIEW="$AGENT_WORK/skills/tri-agent-review/SKILL.md"
+AGENT_SKILL_MEMORY="$AGENT_WORK/skills/tri-agent-memory/SKILL.md"
+AGENT_SKILL_MEMORY_COLLECT="$AGENT_WORK/skills/tri-agent-memory/scripts/collect-session.sh"
 AGENT_SKILL_VERIFY="$AGENT_WORK/skills/tri-agent-verify/scripts/verify.sh"
 
 agent_run_cli() {
@@ -53,6 +55,8 @@ agent_classify() {
 
   if echo "$lower" | grep -qE '^(mi |mi a |mi az |hogyan |miért |magyarázd|explain|what |why |működik)'; then
     echo question
+  elif echo "$lower" | grep -qE '^memory:|/tri-agent-memory|memory kurál|kuráld.*memóri|frissítsd.*memory\.md|memória.*kurál|session vége.*memóri'; then
+    echo memory
   elif echo "$lower" | grep -qE '^design:|/design|design doc|architekt|system design|tervezd meg|tervezés|adatmodell|api design'; then
     echo design
   elif echo "$lower" | grep -qE 'review|refactor|audit|ellenőriz|vizsgáld|átnézed|code review|nézd át'; then
@@ -124,6 +128,33 @@ VERIFY: ${verify_note:-nincs}
 STAGED: $staged
 ---
 UNSTAGED: $diff"
+}
+
+agent_collect_memory() {
+  local out
+  if [[ -x "$AGENT_SKILL_MEMORY_COLLECT" ]]; then
+    out=$("$AGENT_SKILL_MEMORY_COLLECT" 2>/dev/null | tail -1)
+    echo "${out:-}"
+  fi
+}
+
+agent_run_memory_curate() {
+  local id="$1" desc="${2:-memory kurálás}"
+  local collect ctx
+  "$AGENT_REFRESH" >/dev/null
+  collect=$(agent_collect_memory)
+  ctx=""
+  [[ -n "$collect" && -f "$collect" ]] && ctx=$(head -c 60000 "$collect")
+
+  echo "[$id] Claude memory kurálás (tri-agent-memory skill)..."
+  "$AGENT_RUN_SCRIPT" --full claude "Memory curation. Task $id: $desc
+Kötelező skill: $AGENT_SKILL_MEMORY — olvasd references/curation-checklist.md-t is.
+Gyűjtött kontextus:
+---
+${ctx:-nincs collect output}
+---
+Írd agents/tasks/${id}-memory.json-ba (updated_files, actions, summary, ts).
+Frissítsd MEMORY.md indexet és releváns memory/** fájlokat. Ne írj titkot."
 }
 
 agent_write_summary() {

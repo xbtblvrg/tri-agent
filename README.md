@@ -29,6 +29,7 @@ További eszközök: `git`, `jq`, `rg`, `make` — lásd `make check`
 ```bash
 do "add retry logic to foo()"     # Codex → verify → Claude → auto-fix
 do "design: új API"               # Grok design doc
+do "memory: kuráld a sessiont"   # Claude MEMORY kurálás
 make check                         # health check
 make status                        # git + tasks
 ```
@@ -49,6 +50,7 @@ make status                        # git + tasks
 | `tri-agent-implement` | Codex | `skills/tri-agent-implement/SKILL.md` |
 | `tri-agent-review` | Claude | `skills/tri-agent-review/SKILL.md` |
 | `tri-agent-verify` | Pipeline | `skills/tri-agent-verify/scripts/verify.sh` |
+| `tri-agent-memory` | Claude | `skills/tri-agent-memory/SKILL.md` |
 
 ## Struktúra
 

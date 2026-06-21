@@ -32,6 +32,11 @@ Kövesd: $AGENT_WORK/.grok/bundled/skills/design/SKILL.md
 Írd: agents/tasks/${id}-design.md (magyarul, tömör). Ne implementálj még."
     agent_append_log "$id" "$desc" "grok" "design doc"
     ;;
+  memory)
+    agent_write_task "$id" "$desc" "active" "auto"
+    agent_run_memory_curate "$id" "$desc"
+    agent_append_log "$id" "$desc" "claude" "memory kurálva"
+    ;;
   review)
     agent_write_task "$id" "$desc" "active" "auto"
     agent_run_claude_review "$id"

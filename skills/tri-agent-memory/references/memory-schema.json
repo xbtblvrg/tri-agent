@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tri-agent memory curation report",
+  "type": "object",
+  "required": ["id", "updated_files", "summary", "ts"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^T-[0-9]{4}$" },
+    "updated_files": { "type": "array", "items": { "type": "string" } },
+    "actions": { "type": "array", "items": { "type": "string" } },
+    "summary": { "type": "string" },
+    "ts": { "type": "string", "format": "date-time" }
+  }
+}

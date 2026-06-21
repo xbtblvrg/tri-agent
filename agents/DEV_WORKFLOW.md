@@ -19,7 +19,7 @@ agent-do.sh "bármi feladat"
 
 ```
 agent-do.sh
-  ├─ classify (kérdés → Grok | design → Grok | review → Claude | feladat → pipeline)
+  ├─ classify (kérdés → Grok | design → Grok | memory → Claude | review → Claude | feladat → pipeline)
   ├─ Codex implement (tri-agent-implement skill)
   ├─ verify (tri-agent-verify script)
   ├─ Claude review (tri-agent-review skill + git diff)

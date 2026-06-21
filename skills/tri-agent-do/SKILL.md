@@ -43,6 +43,9 @@ bin/agent-do.sh "USER FELADAT SZÖVEGE"
 | Implement | `skills/tri-agent-implement/SKILL.md` (Codex) |
 | Verify | `skills/tri-agent-verify/scripts/verify.sh` |
 | Review | `skills/tri-agent-review/SKILL.md` (Claude) |
+| Memory | `skills/tri-agent-memory/SKILL.md` (Claude, session vég) |
+
+Session végén (több kész task után): javasold `do "memory: kuráld a sessiont"`.
 
 ## Ne csináld
 

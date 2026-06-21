@@ -29,6 +29,11 @@ cmd_route() {
   exec "$(dirname "$0")/agent-do.sh" "$*"
 }
 
+cmd_memory() {
+  local desc="${*:-memory: session kurálás}"
+  exec "$(dirname "$0")/agent-do.sh" "$desc"
+}
+
 cmd_status() {
   "$AGENT_REFRESH"
   echo "=== Dev status ==="
@@ -46,10 +51,11 @@ case "$cmd" in
   review)    cmd_review "$*" ;;
   pipeline|route) cmd_route "$*" ;;
   refresh)   "$AGENT_REFRESH" ;;
+  memory)    cmd_memory "$*" ;;
   status)    cmd_status ;;
   *)
     echo "User: agent-do.sh \"feladat\"  (automatikus minden)"
-    echo "Dev:  agent-dev.sh status|refresh|implement|review"
+    echo "Dev:  agent-dev.sh status|refresh|memory|implement|review"
     exit 1
     ;;
 esac
