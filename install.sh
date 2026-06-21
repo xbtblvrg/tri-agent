@@ -34,6 +34,11 @@ fi
 
 [[ -f "$TARGET/memory/agent-decisions.md" ]] || echo "# Agent döntések" >"$TARGET/memory/agent-decisions.md"
 [[ -f "$TARGET/CLAUDE.md" ]] || cp "$SRC/CLAUDE.md" "$TARGET/CLAUDE.md"
+# Codex global tri-agent hint (merge with existing if present)
+if [[ ! -f "$HOME/.codex/AGENTS.md" ]]; then
+  mkdir -p "$HOME/.codex"
+  cp "$SRC/templates/CODEX-AGENTS.md" "$HOME/.codex/AGENTS.md" 2>/dev/null || true
+fi
 [[ -f "$TARGET/Makefile" ]] || cp "$SRC/Makefile" "$TARGET/"
 [[ -f "$TARGET/.editorconfig" ]] || cp "$SRC/.editorconfig" "$TARGET/"
 
