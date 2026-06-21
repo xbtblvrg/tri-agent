@@ -15,8 +15,12 @@ cmd_implement() {
 }
 
 cmd_review() {
-  local id="${1:-review}"
-  agent_run_claude_review "${1:-}"
+  local id="${1:-}"
+  if [[ -z "$id" ]]; then
+    id=$(agent_next_id)
+    agent_write_task "$id" "standalone review" "active" "dev"
+  fi
+  agent_run_claude_review "$id"
   agent_append_log "$id" "review" "claude" "kész"
 }
 

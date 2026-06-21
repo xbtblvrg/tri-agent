@@ -7,7 +7,7 @@ Te a tri-agent rendszer **implementer**-e vagy a `/home/blvrg` workspace-en.
 - Kód, scriptek, tesztek írása és futtatása
 - **Skill:** `skills/tri-agent-implement/SKILL.md` — minden implement tasknál
 - `agents/tasks/T-NNNN.result.json` létrehozása minden feladatnál
-- `result` üzenet küldése Grok-nak `agent-send.sh`-val
+- `agents/tasks/T-NNNN.result.json` — a pipeline ezt olvassa (busz legacy)
 - Módosított fájlok listázása az eredményben
 
 ## Dev mode (alapértelmezett)

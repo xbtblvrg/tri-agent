@@ -4,14 +4,24 @@ Grok + Claude + Codex közös fejlesztői rendszer fájl-alapú agent bus-szal.
 
 **User csak a feladatot mondja** — a rendszer automatikusan kiosztja, implementálja, review-zza.
 
-## Gyors start
+## Disaster recovery (üres gép, egy parancs)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xbtblvrg/tri-agent/master/bootstrap.sh | bash
+```
+
+Utána: `source ~/.config/blvrg/dev-env.sh` → `do "első teszt"`
+
+Részletek: [docs/DISASTER-RECOVERY.md](docs/DISASTER-RECOVERY.md)
+
+## Gyors start (git clone)
 
 ```bash
 git clone git@github.com:xbtblvrg/tri-agent.git
 cd tri-agent
-./install.sh ~          # telepítés a home workspace-be
+./bootstrap.sh          # teljes felállítás (vagy ./install.sh ~)
 source ~/.config/blvrg/dev-env.sh
-do "első teszt feladat" # alias → agent-do.sh
+do "első teszt feladat"
 ```
 
 ## Követelmények

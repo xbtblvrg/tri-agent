@@ -26,11 +26,11 @@ Az alábbi busz/protokoll **belső** (agent-do és agent-run használja), nem us
 
 | Réteg | Útvonal | Ki írja |
 |-------|---------|---------|
-| Hosszú táv | `/home/blvrg/MEMORY.md` | Claude (kurálás), Grok (index frissítés) |
+| Hosszú táv | `/home/blvrg/MEMORY.md` | **Csak Claude** (tri-agent-memory skill) |
 | Napi log | `/home/blvrg/memory/YYYY-MM-DD.md` | Bárki append-only |
-| Döntések | `/home/blvrg/memory/agent-decisions.md` | Grok + Claude |
-| Feladatnapló | `/home/blvrg/memory/agent-task-log.md` | Mindhárom |
-| Rendszer | `/home/blvrg/memory/system/tri-agent.md` | Grok |
+| Döntések | `/home/blvrg/memory/agent-decisions.md` | Grok + Claude append |
+| Feladatnapló | `/home/blvrg/memory/agent-task-log.md` | Mindhárom append |
+| Rendszer | `/home/blvrg/memory/system/*.md` | **Claude** kurálja (memory skill); Grok/Codex olvas |
 
 **NEM közös** (csak olvasható háttérforrás):
 - `~/.claude/projects/-home-blvrg/memory/` — Claude auto-memory
@@ -38,7 +38,11 @@ Az alábbi busz/protokoll **belső** (agent-do és agent-run használja), nem us
 
 Fontos tudás Claude auto-memory-ból → átvezetni `MEMORY.md` vagy napi log alá.
 
-## Kommunikáció (agent bus)
+## Kommunikáció
+
+**Fő flow:** `agent-do.sh` → `agents/tasks/T-NNNN.{result,review,verify,memory}.json` (nem busz-alapú).
+
+### Agent bus (legacy / demo)
 
 Üzenet = egy JSON fájl a címzett inboxában. Atomi írás `mv`-vel.
 

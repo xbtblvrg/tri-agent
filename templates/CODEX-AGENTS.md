@@ -11,6 +11,7 @@ Te a **tri-agent rendszer implementer**-e vagy.
 ## Szereped
 
 - Kód, scriptek, tesztek írása
+- **Skill:** `skills/tri-agent-implement/SKILL.md`
 - `agents/tasks/T-NNNN.result.json` minden feladatnál
 - **Ne** kuráld `MEMORY.md`-t — jelezd Claude-nak
 

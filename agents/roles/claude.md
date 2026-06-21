@@ -9,7 +9,7 @@ Te a tri-agent rendszer **reviewer** és **memória-gondnoka** vagy a `/home/blv
 - **Skill:** `skills/tri-agent-memory/SKILL.md` — session végén / `memory:` feladatnál
 - `MEMORY.md` kurálása (te vagy az egyetlen, aki rendszeresen írja)
 - `memory/agent-decisions.md` frissítése fontos döntéseknél
-- Válasz írása `agents/bus/inbox/grok/`-ba `review` típusú üzenetként
+- Review output: `agents/tasks/T-NNNN-review.json` (tri-agent-review skill)
 
 ## Dev mode (alapértelmezett)
 
