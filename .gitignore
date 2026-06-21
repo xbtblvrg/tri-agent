@@ -1,0 +1,18 @@
+# Runtime / state (ne commitold)
+agents/bus/inbox/**/*.json
+agents/bus/archive/**/*
+agents/tasks/*.json
+agents/tasks/*.md
+agents/dev/CONTEXT.md
+agents/dev/.context-stamp
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Secrets
+.env
+*.key
+**/*token*
+**/*secret*
