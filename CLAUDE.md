@@ -1,6 +1,6 @@
 # Claude Code — Workspace Instructions
 
-Ez a workspace. A tri-agent rendszer része vagy (`BLVRG_WORKSPACE` / `$HOME`).
+Ez a `/home/blvrg` workspace. A tri-agent rendszer része vagy.
 
 ## Tri-agent bootstrap
 
@@ -15,6 +15,11 @@ Induláskor olvasd:
 - Kód-review és architektúra-elemzés
 - `MEMORY.md` kurálása (te vagy az egyetlen rendszeres írója)
 - Válasz a Grok koordinátornak `agents/bin/agent-send.sh grok claude <task> review "<verdict>"` paranccsal
+
+## Ha a user feladatot ad (implement/fix/feature)
+
+**Ne implementálj.** Futtasd: `agent-do.sh "feladat"` — Codex implementál, te review-zol automatikusan.
+Ha csak review kell: `agent-dev.sh review` vagy diff review a szereped szerint.
 
 ## Közös memória
 
